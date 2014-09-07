@@ -1,4 +1,5 @@
 require 'zip'
+require 'av'
 
 module Paperclip
   class Chainer < Processor
@@ -62,7 +63,7 @@ module Paperclip
       file = Tempfile.new(['ogg-chainer-', @target_format])
       Paperclip.log "[chainer] Concatentating #{destination} into #{file.path}"
       begin
-        ::Av.cli.input_concat(list)
+        ::Av.cli.filter_concat(list)
         ::Av.cli.add_destination(file.path)
         ::Av.cli.run
         return file.path

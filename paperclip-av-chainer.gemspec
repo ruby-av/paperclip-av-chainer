@@ -26,4 +26,5 @@ Gem::Specification.new do |spec|
   
   spec.add_dependency "paperclip", ">=2.5.2"
   spec.add_dependency "rubyzip", "~> 1.1.0"
+  spec.add_dependency "av", ">= 0.0.1"
 end
