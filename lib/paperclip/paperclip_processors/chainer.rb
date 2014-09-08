@@ -53,6 +53,7 @@ module Paperclip
       Paperclip.log "[chainer] Concatentating #{list.inspect} from #{@destination} into #{target.path}"
       begin
         cli = ::Av.cli
+        cli.reset_input_filters
         cli.filter_concat(list)
         cli.add_destination(target.path)
         cli.run
