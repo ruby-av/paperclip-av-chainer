@@ -9,10 +9,7 @@ require 'paperclip/av/chainer'
 
 Bundler.require(:default)
 # Connect to sqlite
-ActiveRecord::Base.establish_connection(
-  "adapter" => "sqlite3",
-  "database" => ":memory:"
-)
+ActiveRecord::Base.establish_connection("adapter" => "sqlite3", "database" => ":memory:")
 
 ActiveRecord::Base.logger = Logger.new(nil)
 load(File.join(File.dirname(__FILE__), 'schema.rb'))
@@ -25,13 +22,16 @@ RSpec.configure do |config|
 end
 
 class Document < ActiveRecord::Base
-	has_attached_file :original,
-		:storage => :filesystem,
-    	:path => "./spec/tmp/:id.:extension",
-    	:url => "/spec/tmp/:id.:extension",
-    	:styles => {
-    		:text => {:full_text_column => :original_full_text}
-    	},
-    	:processors => [:docsplit_text]
+  has_attached_file :original,
+    storage: :filesystem,
+    path: "./spec/tmp/:id.:extension",
+    url: "/spec/tmp/:id.:extension",
+    styles: {
+      small: {
+        format: :ogg
+      }
+    }, processors: [:chainer]
+    
+  do_not_validate_attachment_file_type :original
 end
 
