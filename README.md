@@ -1,6 +1,7 @@
-# Paperclip::Av::Chainer
+[![Build Status](https://travis-ci.org/ruby-av/paperclip-av-chainer.svg?branch=master)](https://travis-ci.org/ruby-av/paperclip-av-chainer)
+# Paperclip Chainer
 
-TODO: Write a gem description
+Audio/Video Chainer for Paperclip using FFMPEG/Avconv.
 
 ## Installation
 
@@ -18,7 +19,27 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+# app/models/user.rb
+class Post < ActiveRecord::Base
+  has_attached_file :audio, :styles => {
+    :medium => { :geometry => "640x480", :format => 'ogg' },
+  }, :processors => [:chainer]
+end
+```
+Now when you attach archives (see supported formats) containing audio files, they will
+all be concatenated in one file.
+
+### Supported Formats
+
+Currently supported input archives:
+
+    * ZIP
+
+Concatenting audio files tested:
+
+    * OGG
+    * SPX
 
 ## Contributing
 
