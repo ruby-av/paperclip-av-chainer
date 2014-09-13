@@ -1,7 +1,13 @@
-[![Build Status](https://travis-ci.org/ruby-av/paperclip-av-chainer.svg?branch=master)](https://travis-ci.org/ruby-av/paperclip-av-chainer)
 # Paperclip Chainer
 
 Audio/Video Chainer for Paperclip using FFMPEG/Avconv.
+
+## Status
+
+[![Build Status](https://travis-ci.org/ruby-av/paperclip-av-chainer.svg?branch=master)](https://travis-ci.org/ruby-av/paperclip-av-chainer)
+[![Coverage Status](https://coveralls.io/repos/ruby-av/paperclip-av-chainer/badge.png?branch=master)](https://coveralls.io/r/ruby-av/paperclip-av-chainer?branch=master)
+[![Code Climate](https://codeclimate.com/github/ruby-av/paperclip-av-chainer/badges/gpa.svg)](https://codeclimate.com/github/ruby-av/paperclip-av-chainer)
+
 
 ## Installation
 
