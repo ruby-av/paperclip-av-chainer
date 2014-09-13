@@ -3,21 +3,20 @@ require 'av'
 
 module Paperclip
   class Chainer < Processor
-    attr_accessor :whiny, :destination, :extension, :basename, :supported_formats
+    attr_accessor :file, :whiny, :destination, :extension, :basename, :supported_formats
     
     def initialize file, options = {}, attachment = nil
-      Paperclip.log "[chainer] Got file #{file.path}"
-      @whiny = options[:whiny].nil? ? true : options[:whiny]
       @file = file
+      @whiny = options[:whiny].nil? ? true : options[:whiny]
+      @destination = Pathname.new("#{Dir.tmpdir}/#{SecureRandom.uuid}")
       @extension  = File.extname(@file.path)
       @basename = File.basename(@file.path, @extension)
       @supported_formats = ['.zip']
-      @destination = Pathname.new("#{Dir.tmpdir}/#{SecureRandom.uuid}")
     end
     
     def make
       if @supported_formats.include?(@extension)
-        Paperclip.log "[chainer] Got file #{@file.path} with extension #{@extension}"
+        Paperclip.log "[chainer] Received supported file #{@file.path}"
         case @extension
         when '.zip'
           unzip
@@ -28,21 +27,24 @@ module Paperclip
         # on the new file
         return result
       end
+      Paperclip.log "[chainer] Skipping file with unsupported format: #{@file.path}"
       # If the file is not supported, just return it
       @file
     end
     
     def unzip
-      Paperclip.log "[chainer] Extracting contents to #{@destination}"
-      Zip::File.open(File.expand_path(@file.path)) do |zip_file|
-        Paperclip.log "[chainer] Creating #{@destination}"
-        FileUtils.mkdir_p(@destination)
-        zip_file.each do |source|
-          # Extract to file/directory/symlink
-          Paperclip.log "[chainer] Extracting #{source.name}"
-          target_file = @destination.join(source.name)
-          @target_format = File.extname(source.name)
-          zip_file.extract(source, target_file) unless File.exists?(target_file)
+      if @supported_formats.include?(@extension)
+        Paperclip.log "[chainer] Extracting contents to #{@destination}"
+        Zip::File.open(File.expand_path(@file.path)) do |zip_file|
+          Paperclip.log "[chainer] Creating #{@destination}"
+          FileUtils.mkdir_p(@destination)
+          zip_file.each do |source|
+            # Extract to file/directory/symlink
+            Paperclip.log "[chainer] Extracting #{source.name}"
+            target_file = @destination.join(source.name)
+            @target_format = File.extname(source.name)
+            zip_file.extract(source, target_file) unless File.exists?(target_file)
+          end
         end
       end
     end
