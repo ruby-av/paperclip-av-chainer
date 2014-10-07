@@ -16,27 +16,27 @@ module Paperclip
     
     def make
       if @supported_formats.include?(@extension)
-        Paperclip.log "[chainer] Received supported file #{@file.path}"
+        log "Received supported file #{@file.path}"
         case @extension
         when '.zip'
           unzip
         end
         result = concatenate
-        Paperclip.log "[chainer] Successfully concatenated source into #{result.path}"
+        log "Successfully concatenated source into #{result.path}"
         # Explicitly return in order to allow the next processor in the chain to work
         # on the new file
         return result
       end
-      Paperclip.log "[chainer] Skipping file with unsupported format: #{@file.path}"
+      log "Skipping file with unsupported format: #{@file.path}"
       # If the file is not supported, just return it
       @file
     end
     
     def unzip
       if @supported_formats.include?(@extension)
-        Paperclip.log "[chainer] Extracting contents to #{@destination}"
+        log "Extracting contents to #{@destination}"
         Zip::File.open(File.expand_path(@file.path)) do |zip_file|
-          Paperclip.log "[chainer] Creating #{@destination}"
+          log "Creating #{@destination}"
           FileUtils.mkdir_p(@destination)
           zip_file.each do |source|
             # Extract to file/directory/symlink
@@ -52,9 +52,9 @@ module Paperclip
     def concatenate
       list = Dir["#{@destination}/*"]
       target = Tempfile.new(['chainer-', @target_format])
-      Paperclip.log "[chainer] Concatentating #{list.inspect} from #{@destination} into #{target.path}"
+      log "Concatentating #{list.inspect} from #{@destination} into #{target.path}"
       begin
-        cli = ::Av.cli
+        cli = ::Av.cli(log: true)
         cli.reset_input_filters
         cli.filter_concat(list)
         cli.add_destination(target.path)
@@ -63,6 +63,10 @@ module Paperclip
       rescue Cocaine::ExitStatusError => e
         raise Paperclip::Error, "error while concatenating video for #{@file.path}: #{e}" if @whiny
       end
+    end
+    
+    def log message
+      Paperclip.log "[chainer] #{message}"
     end
   end
 end
