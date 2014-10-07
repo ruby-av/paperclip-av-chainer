@@ -54,6 +54,7 @@ module Paperclip
       target = Tempfile.new(['chainer-', @target_format])
       log "Concatentating #{list.inspect} from #{@destination} into #{target.path}"
       begin
+        ::Av.logger = Paperclip.logger
         cli = ::Av.cli(log: true)
         cli.reset_input_filters
         cli.filter_concat(list)
