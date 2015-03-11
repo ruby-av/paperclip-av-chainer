@@ -8,6 +8,7 @@ Audio/Video Chainer for Paperclip using FFMPEG/Avconv.
 [![Coverage Status](https://coveralls.io/repos/ruby-av/paperclip-av-chainer/badge.png?branch=master)](https://coveralls.io/r/ruby-av/paperclip-av-chainer?branch=master)
 [![Code Climate](https://codeclimate.com/github/ruby-av/paperclip-av-chainer/badges/gpa.svg)](https://codeclimate.com/github/ruby-av/paperclip-av-chainer)
 [![Dependency Status](https://gemnasium.com/ruby-av/paperclip-av-chainer.svg)](https://gemnasium.com/ruby-av/paperclip-av-chainer)
+[![Gem Version](https://badge.fury.io/rb/paperclip-av-chainer.svg)](http://badge.fury.io/rb/paperclip-av-chainer)
 
 ## Installation
 
